@@ -16,12 +16,12 @@ def get_release_url(repo_dict):
 def get_release_url_for_repo_in_dict(repo, d):
     return get_release_url(d["repositoryes"][repo])
 
-def compare(yaml_a, yaml_b):
+def compare(galactic.yaml, rolling.yaml): #yaml_a, yaml_b
     "Here, yaml_a will usually be 'galactic' and yaml_b will be 'rolling'."
 
     # Let's first parse the two YAML files into two Python dictionaries.
-    dict_a = parse_yaml_to_dictionary(yaml_a)
-    dict_b = parse_yaml_to_dictionary(yaml_b)
+    dict_a = parse_yaml_to_dictionary(galactic.yaml) #yaml_a
+    dict_b = parse_yaml_to_dictionary(rolling.yaml) #yaml_b
 
     # A
     # This is the first condition that we are trying to meet.
