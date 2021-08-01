@@ -1,3 +1,4 @@
+import sys
 import yaml
 
 REPO_URL_PATTERN = "ros2-gbp"
@@ -16,12 +17,11 @@ def get_release_url(repo_dict):
 def get_release_url_for_repo_in_dict(repo, d):
     return get_release_url(d["repositoryes"][repo])
 
-def compare(galactic.yaml, rolling.yaml): #yaml_a, yaml_b
-    "Here, yaml_a will usually be 'galactic' and yaml_b will be 'rolling'."
+def compare(yaml_filepath_a, yaml_filepath_b):
 
     # Let's first parse the two YAML files into two Python dictionaries.
-    dict_a = parse_yaml_to_dictionary(galactic.yaml) #yaml_a
-    dict_b = parse_yaml_to_dictionary(rolling.yaml) #yaml_b
+    dict_a = parse_yaml_to_dictionary(yaml_filepath_a)
+    dict_b = parse_yaml_to_dictionary(yaml_filepath_b)
 
     # A
     # This is the first condition that we are trying to meet.
@@ -43,12 +43,12 @@ def compare(galactic.yaml, rolling.yaml): #yaml_a, yaml_b
         if release_url is not None and REPO_URL_PATTERN not in release_url:
             repos_with_non_ros_2_in_b.add(r)
 
-    print("Repos from '" + yaml_a + "' with '" + REPO_URL_PATTERN + "'")
+    print("Repos from '" + yaml_filepath_a + "' with '" + REPO_URL_PATTERN + "'")
     print(repos_with_ros_2_in_a)
 
     print("")
 
-    print("Repos from '" + yaml_b + "' WITHOUT '" + REPO_URL_PATTERN + "'")
+    print("Repos from '" + yaml_filepath_b + "' WITHOUT '" + REPO_URL_PATTERN + "'")
     print(repos_with_non_ros_2_in_b)
 
     repos_of_interest = repos_with_ros_2_in_a.intersection(repos_with_non_ros_2_in_b)
@@ -57,4 +57,8 @@ def compare(galactic.yaml, rolling.yaml): #yaml_a, yaml_b
     print(repos_of_interest)
 
 if __name__ == "__main__":
-    compare("galactic.yaml", "rolling.yaml")
+    if (len(sys.argv)) < 3:
+        print("Usage: " + sys.argv[0] + " filepath_a filepath_b")
+        sys.exit(1)
+
+    compare(sys.argv[1], sys.argv[2])
